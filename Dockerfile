@@ -36,4 +36,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 # Define default command.
 CMD ["/opt/karaf/bin/karaf"] 
 
-# todo defaut userpasswd / installationsscript
+# todo default karaf password / auto karaf shell installationsscript / configure org.osgi.framework.bootdelegation and more
