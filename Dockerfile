@@ -1,9 +1,10 @@
-FROM spalarus/centos-jdk-hybrid:8
+FROM spalarus/java-kit:8
 
-MAINTAINER spalarus <s.palarus@gmail.com>
+MAINTAINER spalarus <s.palarus@googlemail.com>
 
-ENV KARAF_VERSION=4.1.3
+ARG KARAF_VERSION=4.1.3
 ENV KARAF_HOME=/opt/karaf
+ENV KARAF_BASE=/opt/karaf
 
 ADD ./entrypoint.sh /entrypoint.sh
 ADD ./initkaraf /opt/karaf/bin/initkaraf
@@ -20,9 +21,11 @@ RUN groupadd -r karaf -g 1001 && useradd -u 1001 -r -g karaf -m -d /opt/karaf -s
 USER karaf
 
 WORKDIR ${KARAF_HOME}
-ENV OSGI_IMPLEMENTATION=
-ENV FETCH_CUSTOM_URL=
-ENV KARAF_INIT_COMMANDS=
+
+ENV HOME=/opt/karaf
+ENV OSGI_IMPLEMENTATION=KEEP
+ENV FETCH_CUSTOM_URL=NONE
+ENV KARAF_INIT_COMMANDS=NONE
 
 VOLUME ["/opt/karaf/deploy","/opt/karaf/etc","/opt/karaf/data"]
 EXPOSE 1099 8101 8181 44444

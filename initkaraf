@@ -2,7 +2,10 @@
 
 if [[ ! -z "${FETCH_CUSTOM_URL}" ]] 
 then
-    wget ${FETCH_CUSTOM_URL} -P /opt/karaf/etc
+    if [ "${FETCH_CUSTOM_URL}" != "NONE" ]
+    then
+        wget ${FETCH_CUSTOM_URL} -P /opt/karaf/etc
+    fi
 fi
 
 if [ -f  /opt/karaf/etc/custom_etc.zip ]
@@ -12,7 +15,10 @@ fi
 
 if [[ ! -z "${KARAF_INIT_COMMANDS}" ]]
 then
-    sleep 7 && /opt/karaf/bin/client -r 7  "${KARAF_INIT_COMMANDS}" >> /opt/karaf/data/initcommands.log 2>&1 &
+    if [ "${KARAF_INIT_COMMANDS}" != "NONE" ]
+    then
+        sleep 7 && /opt/karaf/bin/client -r 7  "${KARAF_INIT_COMMANDS}" >> /opt/karaf/data/initcommands.log 2>&1 &
+    fi
 fi
 
 if [ -f  /opt/karaf/etc/initcommands ]
