@@ -44,7 +44,7 @@ docker run --rm -it \
     spalarus/karaf
 ```
 
-To execute complex karaf shell scripts by a background karaf client **on first start**, you should mount this script to */opt/karaf/etc/initcommands .
+To execute complex karaf shell scripts by a background karaf client **on first start**, you should mount this script to */opt/karaf/etc/initcommands* .
 
 ```shell
 docker run --rm -it \
