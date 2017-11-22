@@ -30,6 +30,12 @@ then
     sed -i 's/^\(karaf\.framework\s*=\s*\).*$/\1\equinox/' /opt/karaf/etc/config.properties
 fi
 
+if [ "${XVFB}" = "true" ]
+then
+    export DISPLAY="unix:99.0"
+    Xvfb :99 -screen 0 1x1x16 > /dev/null 2>&1 &
+fi
+
 if [ -f /var/opt/firstboot ]
 then
     sudo /sbin/initjdk.sh
