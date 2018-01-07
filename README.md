@@ -2,6 +2,10 @@ Docker image for [Karaf](http://karaf.apache.org/) based on [CentOS](https://www
 
 **Using the image, you accept the [Oracle Binary Code License Agreement](http://www.oracle.com/technetwork/java/javase/terms/license/index.html) for Java SE!!!**
 
+## Source Repository
+
+@see on [GitHub](https://github.com/spalarus/docker-karaf)
+
 ## Usage
 
 run in foreground example:
