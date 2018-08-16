@@ -2,7 +2,7 @@ FROM spalarus/java-kit:8
 
 MAINTAINER spalarus <s.palarus@googlemail.com>
 
-ARG KARAF_VERSION=4.1.5
+ARG KARAF_VERSION=4.1.6
 ENV KARAF_HOME=/opt/karaf
 ENV KARAF_BASE=/opt/karaf
 
