@@ -44,7 +44,7 @@ Following command creates a karaf-container with feature scr and webconsole. A c
 
 ```shell
 docker run --rm -it \
-    -e KARAF_INIT_COMMANDS="feature:install scr; feature:install webconsole;" 
+    -e KARAF_INIT_COMMANDS="feature:install scr; feature:install webconsole;" \
     spalarus/karaf
 ```
 
@@ -52,7 +52,7 @@ To execute complex karaf shell scripts by a background karaf client **on first s
 
 ```shell
 docker run --rm -it \
-    -v /this/file/is/a/karafshellscript:/opt/karaf/etc/initcommands
+    -v /this/file/is/a/karafshellscript:/opt/karaf/etc/initcommands \
     spalarus/karaf
 ```
 The script does not continue, if one of karaf shell script commands failed.
@@ -63,7 +63,7 @@ Properties in file ${KARAF_BASE}/etc/custom.properties  will override the defaul
 
 ```shell
 docker run --rm -it \
-    -v /my/custom.properties:/opt/karaf/etc/custom.properties
+    -v /my/custom.properties:/opt/karaf/etc/custom.properties \
     spalarus/karaf
 ```
 
