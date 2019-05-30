@@ -15,7 +15,7 @@ docker run \
     -e JAVA_OPTS="-Xms1024m -Xmx2048m" \
     -e OSGI_IMPLEMENTATION=EQUINOX \
     -p 8181:8181 \
-    spalarus/karaf 
+    spalarus/karaf \
     /opt/karaf/bin/karaf
 ```
 ## Volumes
@@ -45,7 +45,7 @@ docker run -d --name karaffe \
     spalarus/karaf
 ```
 
-To execute more complex karaf shell-scripts initially you should mount this script to */opt/karaf/etc/initcommands* .
+To execute more complex karaf shell-scripts initially, you should mount this script to */opt/karaf/etc/initcommands* .
 
 ```shell
 docker run -d --name karaffe \
@@ -54,6 +54,11 @@ docker run -d --name karaffe \
 ```
 The script does not continue, if one of karaf shell script commands failed.
 
+## Connect to shell of running karaf container (named karaffe)
+
+```shell
+docker exec -it karaffe /opt/karaf/bin/client
+```
 
 ### Configure properties
 
