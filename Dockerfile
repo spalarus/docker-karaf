@@ -23,7 +23,7 @@ RUN yum update -y && \
     chown -R karaf /opt/karaf && \
     yum clean all && \
     rm -rf /var/cache/yum && \
-    touch /var/opt/firstboot
+    touch /var/opt/firstboot && chown karaf /var/opt/firstboot
 
 USER karaf
 WORKDIR ${KARAF_HOME}
