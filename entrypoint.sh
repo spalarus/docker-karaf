@@ -10,7 +10,7 @@ then
     sed -i 's/^\(karaf\.framework\s*=\s*\).*$/\1\equinox/' /opt/karaf/etc/config.properties
 fi
 
-if [ -f /var/opt/firstboot ]
+if [ -f /opt/karaf/firstboot ]
 then
     bash /opt/karaf/bin/initkaraf
 fi

@@ -15,7 +15,8 @@ docker run \
     -e JAVA_OPTS="-Xms1024m -Xmx2048m" \
     -e OSGI_IMPLEMENTATION=EQUINOX \
     -p 8181:8181 \
-    spalarus/karaf
+    spalarus/karaf 
+    /opt/karaf/bin/karaf
 ```
 ## Volumes
 
@@ -34,31 +35,32 @@ docker run \
 
 * OSGI_IMPLEMENTATION: FELIX (Default) / EQUINOX
 
-## Installation / Configuration on first start
+## Service installation / configuration
 
-Following command creates a karaf-container with feature scr and webconsole. A client in background invokesthe command from VAR *KARAF_INIT_COMMANDS* some seconds after container **starts the first time**.
+Following command creates a karaf-container with feature scr and webconsole. A client in background invokes the command from VAR *KARAF_INIT_COMMANDS* - this takes some seconds.
 
 ```shell
-docker run --rm -it \
+docker run -d --name karaffe \
     -e KARAF_INIT_COMMANDS="feature:install scr; feature:install webconsole;" \
     spalarus/karaf
 ```
 
-To execute complex karaf shell scripts by a background karaf client **on first start**, you should mount this script to */opt/karaf/etc/initcommands* .
+To execute more complex karaf shell-scripts initially you should mount this script to */opt/karaf/etc/initcommands* .
 
 ```shell
-docker run --rm -it \
+docker run -d --name karaffe \
     -v /this/file/is/a/karafshellscript:/opt/karaf/etc/initcommands \
     spalarus/karaf
 ```
 The script does not continue, if one of karaf shell script commands failed.
+
 
 ### Configure properties
 
 Properties in file ${KARAF_BASE}/etc/custom.properties  will override the default values given in config.properties.
 
 ```shell
-docker run --rm -it \
+docker run -d --name karaffe \
     -v /my/custom.properties:/opt/karaf/etc/custom.properties \
     spalarus/karaf
 ```

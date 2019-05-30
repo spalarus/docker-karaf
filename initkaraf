@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm /var/opt/firstboot
+rm /opt/karaf/firstboot
 
 if [[ ! -z "${FETCH_CUSTOM_URL}" ]] 
 then
@@ -19,20 +19,12 @@ if [[ ! -z "${KARAF_INIT_COMMANDS}" ]]
 then
     if [ "${KARAF_INIT_COMMANDS}" != "NONE" ]
     then
-        echo "sleep 11" > /opt/karaf/bin/installscript1.sh
-        echo '/opt/karaf/bin/client -r 11  "shell:sleep 1;"' >> /opt/karaf/bin/installscript1.sh
-        echo "sleep 11" >> /opt/karaf/bin/installscript1.sh
-        echo "bash /opt/karaf/bin/client -r 7 -l 3 -f /opt/karaf/bin/initcommands" >> /opt/karaf/bin/installscript1.sh
         echo ${KARAF_INIT_COMMANDS} > /opt/karaf/bin/initcommands
-        bash /opt/karaf/bin/installscript1.sh  >> /opt/karaf/data/initcommands.log 2>&1 &
+        /opt/karaf/bin/installscript1.sh  >> /opt/karaf/data/initcommands.log 2>&1 &
     fi
 fi
 
 if [ -f  /opt/karaf/etc/initcommands ]
 then
-    echo "sleep 11" > /opt/karaf/bin/installscript2.sh
-    echo '/opt/karaf/bin/client -r 11  "shell:sleep 1;"' >> /opt/karaf/bin/installscript2.sh
-    echo "sleep 11" >> /opt/karaf/bin/installscript2.sh
-    echo "bash /opt/karaf/bin/client -r 7 -l 3 -f /opt/karaf/etc/initcommands" >> /opt/karaf/bin/installscript2.sh
-    bash /opt/karaf/bin/installscript2.sh >> /opt/karaf/data/initcommands.log 2>&1 &
+    opt/karaf/bin/installscript2.sh >> /opt/karaf/data/initcommands.log 2>&1 &
 fi

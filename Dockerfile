@@ -8,6 +8,8 @@ ENV KARAF_BASE=/opt/karaf
 
 ADD ./entrypoint.sh /entrypoint.sh
 ADD ./initkaraf /opt/karaf/bin/initkaraf
+ADD ./installscript1.sh /opt/karaf/bin/installscript1.sh
+ADD ./installscript2.sh /opt/karaf/bin/installscript2.sh
 
 RUN yum update -y && \
     yum install -y wget curl zip unzip vim sudo && \
@@ -18,12 +20,14 @@ RUN yum update -y && \
     wget http://www-us.apache.org/dist/karaf/${KARAF_VERSION}/apache-karaf-${KARAF_VERSION}.tar.gz && \
     tar --strip-components=1 -C /opt/karaf -xzf apache-karaf-${KARAF_VERSION}.tar.gz && \
     rm apache-karaf-${KARAF_VERSION}.tar.gz && \
-    chmod u+x /entrypoint.sh && \
-    chmod u+x /opt/karaf/bin/initkaraf && \
+    touch /opt/karaf/firstboot && \
     chown -R karaf /opt/karaf && \
+    chmod u+x /entrypoint.sh && \
+    chmod u+x /opt/karaf/bin/installscript1.sh && \
+    chmod u+x /opt/karaf/bin/installscript2.sh && \
+    chmod u+x /opt/karaf/bin/initkaraf && \
     yum clean all && \
-    rm -rf /var/cache/yum && \
-    touch /var/opt/firstboot && chown karaf /var/opt/firstboot
+    rm -rf /var/cache/yum
 
 USER karaf
 WORKDIR ${KARAF_HOME}
@@ -44,5 +48,4 @@ EXPOSE 1099 8101 8181 44444
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Define default command.
-CMD ["/opt/karaf/bin/karaf"] 
-
+CMD ["/opt/karaf/bin/karaf", "run"] 
