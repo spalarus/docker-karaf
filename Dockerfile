@@ -2,7 +2,7 @@ FROM centos:7
 
 MAINTAINER spalarus <s.palarus@googlemail.com>
 
-ARG KARAF_VERSION=4.2.5
+ARG KARAF_VERSION=4.2.6
 ENV KARAF_HOME=/opt/karaf
 ENV KARAF_BASE=/opt/karaf
 
