@@ -26,5 +26,5 @@ fi
 
 if [ -f  /opt/karaf/etc/initcommands ]
 then
-    opt/karaf/bin/installscript2.sh >> /opt/karaf/data/initcommands.log 2>&1 &
+    /opt/karaf/bin/installscript2.sh >> /opt/karaf/data/initcommands.log 2>&1 &
 fi
