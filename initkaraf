@@ -2,6 +2,8 @@
 
 rm /opt/karaf/firstboot
 
+tar -C /opt/karaf/etc --skip-old-files -xzf /opt/karaf/etc.tgz
+
 if [[ ! -z "${FETCH_CUSTOM_URL}" ]] 
 then
     if [ "${FETCH_CUSTOM_URL}" != "NONE" ]

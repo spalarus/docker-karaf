@@ -2,7 +2,7 @@ FROM centos:7
 
 MAINTAINER spalarus <s.palarus@googlemail.com>
 
-ARG KARAF_VERSION=4.2.6
+ARG KARAF_VERSION=4.2.7
 ENV KARAF_HOME=/opt/karaf
 ENV KARAF_BASE=/opt/karaf
 
@@ -26,6 +26,7 @@ RUN yum update -y && \
     chmod u+x /opt/karaf/bin/installscript1.sh && \
     chmod u+x /opt/karaf/bin/installscript2.sh && \
     chmod u+x /opt/karaf/bin/initkaraf && \
+    tar --directory /opt/karaf/etc -czvf /opt/karaf/etc.tgz . && \
     yum clean all && \
     rm -rf /var/cache/yum
 
