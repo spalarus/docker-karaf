@@ -1,0 +1,31 @@
+#!/bin/bash
+if [ -z "$1" ]
+then
+    echo "You have to define etc-file as argument"
+    exit 1
+fi
+
+ETC_KARAF=/opt/karaf/etc
+ETC_STORAGE=/opt/karaf/vol/etc
+ETC_FILENAME=$1
+
+if [ ! -f  ${ETC_KARAF}/${ETC_FILENAME} ]
+then
+    echo "defined file ${ETC_FILENAME} not found or is not a regular file"
+    exit 1
+fi
+
+if [ -h  ${ETC_KARAF}/${ETC_FILENAME} ]
+then
+    echo "defined file ${ETC_FILENAME} is a symbolic link"
+    exit 1
+fi
+
+if [ ! -f  ${ETC_STORAGE}/${ETC_FILENAME} ]
+then
+    cp --preserve=all ${ETC_KARAF}/${ETC_FILENAME} ${ETC_STORAGE}/${ETC_FILENAME}
+fi
+
+rm ${ETC_KARAF}/${ETC_FILENAME} 
+ln -s ${ETC_STORAGE}/${ETC_FILENAME} ${ETC_KARAF}/${ETC_FILENAME}
+

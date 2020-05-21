@@ -1,0 +1,19 @@
+#!/bin/bash
+ETC_KARAF=/opt/karaf/etc
+ETC_STORAGE=/opt/karaf/vol/etc
+
+for f in ${ETC_STORAGE}/*; do
+    if [ -f ${f} ]; then
+        ETC_FILENAME=$(basename ${f})
+        if [ -f  ${ETC_KARAF}/${ETC_FILENAME} ]
+        then
+            if [ -h  ${ETC_KARAF}/${ETC_FILENAME} ]
+            then
+                continue
+            fi
+            rm ${ETC_KARAF}/${ETC_FILENAME}
+        fi
+        echo "link ${f} to karaf etc directory"
+        ln -s ${ETC_STORAGE}/${ETC_FILENAME} ${ETC_KARAF}/${ETC_FILENAME}
+    fi
+done

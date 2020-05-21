@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sleep 7
+/opt/karaf/bin/client -r 11 -u ${INIT_SCRIPT_USER} -p ${INIT_SCRIPT_PWD} "shell:sleep 1;"
+sleep 3
+/opt/karaf/bin/client -r 7 -l 2 -u ${INIT_SCRIPT_USER} -p ${INIT_SCRIPT_PWD} -b < /opt/karaf/vol/bin/initcommands

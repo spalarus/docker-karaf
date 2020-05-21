@@ -9,20 +9,8 @@ Docker image for [Karaf](http://karaf.apache.org/) based on [CentOS](https://www
 run in foreground example:
 
 ```shell
-docker run \
-    --rm -it \
-    -v /mydeploy:/opt/karaf/deploy \
-    -e JAVA_OPTS="-Xms1024m -Xmx2048m" \
-    -e OSGI_IMPLEMENTATION=EQUINOX \
-    -p 8181:8181 \
-    spalarus/karaf \
-    /opt/karaf/bin/karaf
+docker run --rm -it spalarus/karaf /opt/karaf/bin/karaf
 ```
-## Volumes
-
-* /opt/karaf/deploy (karaf hot deploy directory)
-* /opt/karaf/data (karaf data directory)
-* /opt/karaf/etc (karaf configuration directory)
 
 ## Exposed Ports
 
@@ -31,28 +19,39 @@ docker run \
 * 8181 (jetty)
 * 44444 (rmi server)
 
-## Switch for container selection
+## Feature installation while container creation - delivered by VAR
 
-* OSGI_IMPLEMENTATION: FELIX (Default) / EQUINOX
-
-## Service installation / configuration
-
-Following command creates a karaf-container with feature scr and webconsole. A client in background invokes the command from VAR *KARAF_INIT_COMMANDS* - this takes some seconds.
+Following command creates a karaf-container with feature scr and webconsole. A client in background invokes the commands from variable *KARAF_INIT_COMMANDS* - this takes some seconds. The installation process starts 10 seconds after container creation.
 
 ```shell
-docker run -d --name karaffe \
-    -e KARAF_INIT_COMMANDS="feature:install scr; feature:install webconsole;" \
-    spalarus/karaf
+docker run --rm -it -e KARAF_INIT_COMMANDS="feature:install scr; feature:install webconsole;" spalarus/karaf /opt/karaf/bin/karaf
 ```
 
-To execute more complex karaf shell-scripts initially, you should mount this script to */opt/karaf/etc/initcommands* .
+## Volume /opt/karaf/vol
+
+* ./etc (persistent storage for configuration files)
+* ./deploy (karaf deployment storage)
+* ./log  (directory for log files)
+* ./tmp (directory for tmp files)
+* ./bin (directory for initcommands-file)
 
 ```shell
-docker run -d --name karaffe \
-    -v /this/file/is/a/karafshellscript:/opt/karaf/etc/initcommands \
-    spalarus/karaf
+docker run --rm -it -v /home/basti/karvol:/opt/karaf/vol spalarus/karaf /opt/karaf/bin/karaf
+```
+## Feature installation while container creation - delivered in file
+
+The karaf commands for feature installation can provided in file  *<VOL>/bin/initcommands*. The installation process starts 10 seconds after container creation.
+
+```shell
+echo "feature:install scr; feature:install webconsole;" > /home/basti/karvol/bin/initcommands
+docker run --rm -it -v /home/basti/karvol:/opt/karaf/vol spalarus/karaf /opt/karaf/bin/karaf
 ```
 The script does not continue, if one of karaf shell script commands failed.
+
+
+### Backround Karaf Container
+
+docker run -d --name karaffe -v /home/basti/karvol:/opt/karaf/vol spalarus/karaf 
 
 ## Connect to shell of running karaf container (named karaffe)
 
@@ -60,16 +59,22 @@ The script does not continue, if one of karaf shell script commands failed.
 docker exec -it karaffe /opt/karaf/bin/client
 ```
 
-### Configure properties
+### Persistent configuration files
 
-Properties in file ${KARAF_BASE}/etc/custom.properties  will override the default values given in config.properties.
+Configuration files can move to volume. Updates in such files survive container recreation, if volume directory is mounted to host.
 
+To persist user.properties use following command:
 ```shell
-docker run -d --name karaffe \
-    -v /my/custom.properties:/opt/karaf/etc/custom.properties \
-    spalarus/karaf
+docker exec -it karaffe /opt/karaf/bin/touchvoletc users.properties
 ```
 
-### Configure cfg-files
+It is possible to provide configuration files in *<VOL>/etc/* manually. A container recreation or restart checks this directory and links the newly provided configuration files to karaf/etc-directory. To invoke this check in running karaf container on demand, please use following command:
 
-With [karaf config-commands](http://karaf.apache.org/manual/latest/#__code_config_code_commands) in */karaf/etc/initcommands* it is possible to configure all cfg files **on first start**. 
+```shell
+docker exec -it karaffe /opt/karaf/bin/checkvoletc
+```
+
+## FAQ
+
+* On SELinux secured systems (RHEL/CentOS) mount volume with Z-Option (docker run -d --name karaffe -v /home/basti/karvol:/opt/karaf/vol**:Z** spalarus/karaf)
+* On docker systems with CAP_SETUID-capability-issues this container can started as root user (docker run ... **-u root** ... spalarus/karaf ) 
