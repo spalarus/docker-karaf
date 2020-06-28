@@ -26,11 +26,11 @@ Following command creates a karaf-container with features *scr* and *webconsole*
 ```shell
 docker run --rm -it -e KARAF_INIT_COMMANDS="feature:install scr; feature:install webconsole;" spalarus/karaf /opt/karaf/bin/karaf
 ```
-A client in background process connects to karaf instance and invokes the commands from variable *KARAF_INIT_COMMANDS* - this takes some seconds. The installation process starts 10 seconds after container creation.
+After container-start a background process connects to karaf instance and invokes the commands defined in variable *KARAF_INIT_COMMANDS*. The installation process starts 10 seconds after container creation.
  
 ## Volume ( container:/opt/karaf/vol )
 
-* ./etc (persistent storage for configuration files)
+* ./etc (persistent storage for configuration files - see section 'Persistent configuration files')
 * ./deploy (karaf deployment storage)
 * ./log  (directory for log files)
 * ./tmp (directory for tmp files)
@@ -39,6 +39,7 @@ A client in background process connects to karaf instance and invokes the comman
 ```shell
 docker run --rm -it -v /home/karaf/volume:/opt/karaf/vol spalarus/karaf /opt/karaf/bin/karaf
 ```
+
 ## Feature installation while container creation - delivered in file
 
 The karaf commands for feature installation can provided in file  *<VOL>/bin/initcommands*. The installation process starts 10 seconds after container creation.
@@ -49,7 +50,7 @@ docker run --rm -it -v /home/karaf/volume:/opt/karaf/vol spalarus/karaf /opt/kar
 ```
 The script does not continue, if one of karaf-shell-script-commands fails!
 
-### Backround Karaf Container
+### Background Karaf Container
 
 docker run -d --name karaffe -v /home/karaf/volume:/opt/karaf/vol spalarus/karaf 
 
@@ -61,14 +62,15 @@ docker exec -it karaffe /opt/karaf/bin/client
 
 ### Persistent configuration files
 
-Configuration files can move to volume. Updates in such files survive container recreation, if volume directory is mounted to host.
+Configuration files can move to volume. File updates survive container recreation, if volume directory is mounted to host.
 
-To persist the file *user.properties* use following command:
+An Example: To persist the file *user.properties* use following command:
 ```shell
 docker exec -it karaffe /opt/karaf/bin/touchvoletc users.properties
 ```
+The command above copies this file *user.properties* into the volume directory and creates a soft link from etc directory to vol directory.
 
-It is possible to provide configuration files in *<VOL>/etc/* manually. A container recreation or restart checks this directory and links the newly provided configuration files to Karaf-etc-directory. To invoke this check in running karaf container on demand, please use following command:
+It is possible to provide configuration files in *<VOL>/etc/* manually. On container recreation or container restart a script checks this directory and links the newly provided configuration files. To invoke this check in running karaf container on demand, please use following command:
 
 ```shell
 docker exec -it karaffe /opt/karaf/bin/checkvoletc
