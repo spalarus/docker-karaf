@@ -1,9 +1,9 @@
-FROM spalarus/karaf-base:1.0.1
+FROM spalarus/karaf-base:1.0.2
 
 MAINTAINER spalarus <s.palarus@googlemail.com>
 
 
-ARG KARAF_VERSION=4.2.9
+ARG KARAF_VERSION=4.2.10
 
 WORKDIR ${KARAF_HOME}
 USER karaf
